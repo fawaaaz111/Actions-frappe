@@ -36,14 +36,22 @@
           ],
         }" 
       v-model="addActionDialogShown" 
-    />
+    >
+        <template #body-content>
+          <div class="space-y-2">
+            <Input type="text" required label="Title" placeholder="Give a title for your action ..."/>
+            <Input type="select" required label="List" :options="categoryOptions"/>
+          </div>
+        </template>
+    </Dialog>
+        
   </div>
 </template>
 
 <script lang="js" setup>
 // @ts-nocheck
-import { Dialog, createListResource, Card } from 'frappe-ui';
-import { reactive, ref } from 'vue';
+import { Dialog, createListResource, Card, Input } from 'frappe-ui';
+import { computed, reactive, ref } from 'vue';
 
 const action = reactive({
   title: '',
@@ -62,6 +70,20 @@ const actions = createListResource({
 });
 
 actions.reload();
+
+const categories = createListResource({
+  doctype: 'Action Category',
+  fields: ['name', 'title'],
+});
+
+categories.reload();
+
+const categoryOptions = computed(() => {
+  return [{
+    label: 'General',
+    value: 'General',
+  }]
+});
 
 const CompleteAction = (name) => {
   actions.setValue.submit({
