@@ -11,7 +11,9 @@
         <ul>
            <li v-for="action in actions.data" 
            :key="action.name" class="flex flex-row items-center justify-between space-y-2">
-             <span>{{ action.title }}</span>
+             <router-link :to="`/actions/${action.name}`" class="text-blue">
+                {{ action.title }}
+             </router-link>
              <Button icon="check"  @click="CompleteAction(action.name)"></Button>
            </li>
           </ul>
