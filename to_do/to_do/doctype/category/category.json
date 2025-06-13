@@ -21,9 +21,14 @@
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
- "links": [],
- "modified": "2025-06-07 15:48:50.174461",
- "modified_by": "Administrator",
+ "links": [
+  {
+   "link_doctype": "Action",
+   "link_fieldname": "category"
+  }
+ ],
+ "modified": "2025-06-12 19:23:28.953944",
+ "modified_by": "fawaz@alhafiz.com",
  "module": "To Do",
  "name": "Category",
  "naming_rule": "By fieldname",

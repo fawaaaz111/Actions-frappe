@@ -27,9 +27,9 @@
             {
               label: 'Add',
               variant: 'solid',
-              handler: ({close}) => {
+              onClick: () => {
                 AddAction();
-                close();
+                addActionDialogShown = false;
               },
             },
             {'label': 'Cancel', appearance: 'secondary', }
@@ -39,8 +39,8 @@
     >
         <template #body-content>
           <div class="space-y-2">
-            <Input type="text" required label="Title" placeholder="Give a title for your action ..."/>
-            <Input type="select" required label="List" :options="categoryOptions"/>
+            <Input v-model="action.title" type="text" required label="Title" placeholder="Give a title for your action ..."/>
+            <Input v-model="action.category" type="select" required label="List" :options="categoryOptions"/>
           </div>
         </template>
     </Dialog>
@@ -72,17 +72,20 @@ const actions = createListResource({
 actions.reload();
 
 const categories = createListResource({
-  doctype: 'Action Category',
-  fields: ['name', 'title'],
+  doctype: 'Category',
+  fields: ['name'],
+  transform(categories) {
+    return categories.map(category => category.name);
+  },
 });
 
 categories.reload();
 
 const categoryOptions = computed(() => {
-  return [{
-    label: 'General',
-    value: 'General',
-  }]
+  if (categories.list.loading || !categories.data) return []
+
+  console.log('Categories:', categories.data);
+  return categories.data
 });
 
 const CompleteAction = (name) => {
@@ -103,6 +106,7 @@ const CompleteAction = (name) => {
 };
 
 const AddAction = () => {
+  console.log('Adding action:', action);
   actions.insert.submit(action);
 };
 

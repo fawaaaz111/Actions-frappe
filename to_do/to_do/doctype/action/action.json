@@ -52,6 +52,7 @@
   {
    "fieldname": "category",
    "fieldtype": "Link",
+   "in_list_view": 1,
    "label": "Category",
    "options": "Category",
    "reqd": 1
@@ -74,7 +75,7 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-06-09 17:58:33.160532",
+ "modified": "2025-06-12 19:45:23.659810",
  "modified_by": "fawaz@alhafiz.com",
  "module": "To Do",
  "name": "Action",
