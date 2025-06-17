@@ -79,6 +79,7 @@ const categories = createListResource({
   transform(categories) {
     return categories.map(category => category.name);
   },
+  cache: "actions"
 });
 
 categories.reload();
