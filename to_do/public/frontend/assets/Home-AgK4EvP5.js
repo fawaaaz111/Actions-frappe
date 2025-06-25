@@ -1,1 +1,0 @@
-import{c as t,a as e,o as c}from"./index-DKwIzeRH.js";const o={class:"max-w-3xl py-12 mx-auto"},m={__name:"Home",setup(a){return t({name:"Action",limit:10}).fetch(),(n,r)=>(c(),e("div",o))}};export{m as default};
