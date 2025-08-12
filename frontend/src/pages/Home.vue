@@ -1,8 +1,8 @@
 <template>
   <div class="max-w-3xl py-12 mx-auto">
     
-    <div class="flex flex-row items-center justify-between">
-      <h2 class="text-2xl font-bold mb-4">Lists</h2>
+    <div class="flex flex-row items-center justify-between mb-4">
+      <h2 class="text-2xl font-bold">Lists</h2>
       <Button class="btn" icon-left="plus">New List</Button>
     </div>
     
