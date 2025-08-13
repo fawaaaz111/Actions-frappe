@@ -87,7 +87,6 @@ categories.reload();
 const categoryOptions = computed(() => {
   if (categories.list.loading || !categories.data) return []
 
-  console.log('Categories:', categories.data);
   return categories.data
 });
 
@@ -109,7 +108,6 @@ const CompleteAction = (name) => {
 };
 
 const AddAction = () => {
-  console.log('Adding action:', action);
   actions.insert.submit(action);
 };
 
