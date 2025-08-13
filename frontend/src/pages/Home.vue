@@ -3,7 +3,7 @@
     
     <div class="flex flex-row items-center justify-between mb-4">
       <h2 class="text-2xl font-bold">Lists</h2>
-      <Button class="btn" icon-left="plus">New List</Button>
+      <Button class="btn" icon-left="plus" @click="addCategoryDialogShown = true">New List</Button>
     </div>
     
     <div class="mt-3">
@@ -15,7 +15,7 @@
       <!-- No categories state -->
       <div v-else-if="!categories.data || categories.data.length === 0" class="text-center py-8">
         <p class="text-gray-500 mb-4">No categories found. Create your first category!</p>
-        <Button icon-left="plus">Create Category</Button>
+        <Button icon-left="plus" @click="addCategoryDialogShown = true">Create Category</Button>
       </div>
       
       <!-- Grid container for cards -->
@@ -63,6 +63,31 @@
           </div>
         </template>
     </Dialog>
+
+    <!-- New Category Dialog -->
+    <Dialog 
+      :options="{
+          title: 'Add New Category',
+          actions: [
+            {
+              label: 'Add',
+              variant: 'solid',
+              onClick: () => {
+                AddCategory();
+                addCategoryDialogShown = false;
+              },
+            },
+            {'label': 'Cancel', appearance: 'secondary', }
+          ],
+        }" 
+      v-model="addCategoryDialogShown" 
+    >
+        <template #body-content>
+          <div class="space-y-2">
+            <Input v-model="newCategory.title" type="text" required label="Category Name" placeholder="Enter category name (e.g., Work, Personal, Shopping)"/>
+          </div>
+        </template>
+    </Dialog>
         
   </div>
 </template>
@@ -77,7 +102,12 @@ const action = reactive({
   category: 'General',
 });
 
+const newCategory = reactive({
+  title: '',
+});
+
 const addActionDialogShown = ref(false);
+const addCategoryDialogShown = ref(false);
 
 const actions = createListResource({
   doctype: 'Action',
@@ -92,9 +122,9 @@ actions.reload();
 
 const categories = createListResource({
   doctype: 'Category',
-  fields: ['name'],
+  fields: ['name', 'title'],
   transform(categories) {
-    return categories.map(category => category.name);
+    return categories.map(category => category.title);
   },
   cache: "actions"
 });
@@ -145,6 +175,25 @@ const AddAction = () => {
       action.category = 'General'
       // Reload actions to show the new one
       actions.reload()
+    },
+    onError: (error) => {
+      frappe.msgprint({
+        title: 'Error',
+        message: error.message,
+        indicator: 'red',
+      });
+    }
+  })
+};
+
+const AddCategory = () => {
+  categories.insert.submit({
+    ...newCategory,
+    onSuccess: () => {
+      // Reset form
+      newCategory.title = ''
+      // Reload categories to show the new one
+      categories.reload()
     },
     onError: (error) => {
       frappe.msgprint({
