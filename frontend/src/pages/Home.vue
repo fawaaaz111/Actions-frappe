@@ -1,5 +1,5 @@
 <template>
-  <div class="max-w-3xl py-12 mx-auto">
+  <div class="max-w-3xl py-12 px-5 mx-auto">
     
     <div class="flex flex-row items-center justify-between mb-4">
       <h2 class="text-2xl font-bold">Lists</h2>
@@ -7,19 +7,36 @@
     </div>
     
     <div class="mt-3">
-      <Card title="General">
-        <ul>
-           <li v-for="action in actions.data" 
-           :key="action.name" class="flex flex-row items-center justify-between space-y-2">
-             <router-link :to="`/actions/${action.name}`" class="text-blue">
+      <!-- Loading state -->
+      <div v-if="categories.list.loading" class="text-center py-8">
+        <p>Loading categories...</p>
+      </div>
+      
+      <!-- No categories state -->
+      <div v-else-if="!categories.data || categories.data.length === 0" class="text-center py-8">
+        <p class="text-gray-500 mb-4">No categories found. Create your first category!</p>
+        <Button icon-left="plus">Create Category</Button>
+      </div>
+      
+      <!-- Grid container for cards -->
+      <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <!-- Card for each category -->
+        <Card v-for="category in categories.data" :key="category" :title="category">
+          <ul>
+            <li v-for="action in getActionsByCategory(category)" 
+            :key="action.name" class="flex flex-row items-center justify-between space-y-2">
+              <router-link :to="`/actions/${action.name}`" class="text-blue">
                 {{ action.title }}
-             </router-link>
-             <Button icon="check"  @click="CompleteAction(action.name)"></Button>
-           </li>
+              </router-link>
+              <Button icon="check" @click="CompleteAction(action.name)"></Button>
+            </li>
           </ul>
 
-          <Button icon-left="plus" @click="addActionDialogShown = true">New Action</Button>
-      </Card>
+          <div class="flex justify-center mt-4">
+            <Button icon-left="plus" @click="openAddActionDialog(category)">New Action</Button>
+          </div>
+        </Card>
+      </div>
     </div>
 
     <Dialog 
@@ -64,7 +81,7 @@ const addActionDialogShown = ref(false);
 
 const actions = createListResource({
   doctype: 'Action',
-  fields: ['name', 'title', 'description', 'status', 'date', 'due_date'],
+  fields: ['name', 'title', 'description', 'status', 'date', 'due_date', 'category'],
   limit: 10,
   filters: {
     status: 'To-do',
@@ -90,6 +107,18 @@ const categoryOptions = computed(() => {
   return categories.data
 });
 
+// Filter actions by category
+const getActionsByCategory = (category) => {
+  if (!actions.data) return []
+  return actions.data.filter(action => action.category === category)
+}
+
+// Open dialog with pre-selected category
+const openAddActionDialog = (category) => {
+  action.category = category
+  addActionDialogShown.value = true
+}
+
 const CompleteAction = (name) => {
   actions.setValue.submit({
     name: name,
@@ -108,7 +137,23 @@ const CompleteAction = (name) => {
 };
 
 const AddAction = () => {
-  actions.insert.submit(action);
+  actions.insert.submit({
+    ...action,
+    onSuccess: () => {
+      // Reset form
+      action.title = ''
+      action.category = 'General'
+      // Reload actions to show the new one
+      actions.reload()
+    },
+    onError: (error) => {
+      frappe.msgprint({
+        title: 'Error',
+        message: error.message,
+        indicator: 'red',
+      });
+    }
+  })
 };
 
 </script>
