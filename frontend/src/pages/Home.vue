@@ -154,16 +154,13 @@ const CompleteAction = (name) => {
     name: name,
     status: 'Completed',
     onSuccess: () => {
-      actions.reload();
+      // console.log('Action marked as completed successfully');
     },
-    onError: (error) => {
-      frappe.msgprint({
-        title: 'Error',
-        message: error.message,
-        indicator: 'red',
-      });
-    },
-  });  
+  });
+
+  // Optimistic UI update - remove from list immediately
+  actions.reload(true);
+  deleteAction(name);
 };
 
 const AddAction = () => {
@@ -205,4 +202,9 @@ const AddCategory = () => {
   })
 };
 
+
+const  deleteAction = (name) => {
+  const actionIndex = actions.data.findIndex(action => action.name === name);
+  actions.data.splice(actionIndex, 1);
+}
 </script>
