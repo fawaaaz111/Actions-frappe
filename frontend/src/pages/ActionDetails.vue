@@ -10,13 +10,17 @@
                     <Button 
                         @click="action.setValue.submit({ status: 'Archived' })"
                         :disabled="action.doc.status === 'Archived'"
-                        icon-left="trash" appearance="white" class="text-red-400 border-red-400">
+                        icon-left="trash" appearance="white"
+                        class="text-red-400 border-red-400"
+                    >
                         Delete
                     </Button>
                     <Button
                         @click="action.setValue.submit({ status: 'Completed' })"
                         :disabled="action.doc.status === 'Completed'"
-                        icon-left="check" appearance="solid" class="text-green-500 border-green-500">
+                        icon-left="check" appearance="solid"
+                        class="text-green-500 border-green-500"
+                    >
                         Mark As Done
                     </Button>
                 </div>
