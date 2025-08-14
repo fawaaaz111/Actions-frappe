@@ -116,9 +116,11 @@ const actions = createListResource({
   filters: {
     status: 'To-do',
   },
+    cache: "actions",
+    // auto: true,
 });
 
-actions.reload();
+// actions.reload();
 
 const categories = createListResource({
   doctype: 'Category',
@@ -126,10 +128,11 @@ const categories = createListResource({
   transform(categories) {
     return categories.map(category => category.title);
   },
-  cache: "actions"
+  cache: "categories",
+  // auto: true,
 });
 
-categories.reload();
+// categories.reload();
 
 const categoryOptions = computed(() => {
   if (categories.list.loading || !categories.data) return []
@@ -183,6 +186,11 @@ const AddAction = () => {
   })
 };
 
+const  deleteAction = (name) => {
+  const actionIndex = actions.data.findIndex(action => action.name === name);
+  actions.data.splice(actionIndex, 1);
+}
+
 const AddCategory = () => {
   categories.insert.submit({
     ...newCategory,
@@ -202,9 +210,4 @@ const AddCategory = () => {
   })
 };
 
-
-const  deleteAction = (name) => {
-  const actionIndex = actions.data.findIndex(action => action.name === name);
-  actions.data.splice(actionIndex, 1);
-}
 </script>

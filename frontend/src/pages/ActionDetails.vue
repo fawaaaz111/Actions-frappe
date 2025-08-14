@@ -58,5 +58,7 @@ const content = ref('');
 const action = createDocumentResource({
     doctype: 'Action',
     name: props.name,
+    cache: "action",
+    // auto: true
 });
 </script>
