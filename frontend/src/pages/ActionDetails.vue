@@ -2,9 +2,17 @@
     <div class="max-w-6xl py-12 px-5 mx-auto">
         <div class = "mx-20 my-4" v-if="!action.get.loading">
             <div class="flex flex-row items-center justify-between">
-                <h1 class="font-black text-5xl text-gray-900">{{ action.doc.title }}</h1>
+                <div class="flex items-center space-x-4">
+                    <h1 class="font-black text-5xl text-gray-900">{{ action.doc.title }}</h1>
+                    <Badge 
+                        v-if="action.doc.category" 
+                        :label="action.doc.category"
+                        variant="subtle"
+                        size="md"
+                        class="mt-2"
+                    />
+                </div>
                 
-
                 <div class="flex flex-row items-center space-x-2">
                     <Button icon-left="arrow-left" @click="router.back()">Go Back</Button>
                     <Button 
@@ -89,7 +97,7 @@
 // @ts-nocheck
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { TextEditor, Button, createDocumentResource, LoadingIndicator, DatePicker, Checkbox } from 'frappe-ui';
+import { TextEditor, Button, createDocumentResource, LoadingIndicator, DatePicker, Checkbox, Badge } from 'frappe-ui';
 
 const router = useRouter();
 const props = defineProps(['name'])
