@@ -84,7 +84,9 @@
     >
         <template #body-content>
           <div class="space-y-2">
-            <Input v-model="newCategory.title" type="text" required label="Category Name" placeholder="Enter category name (e.g., Work, Personal, Shopping)"/>
+            <Input 
+              v-model="newCategory.title" type="text" required label="Category Name" 
+              placeholder="Enter category name (e.g., Work, Personal, Shopping)"/>
           </div>
         </template>
     </Dialog>
