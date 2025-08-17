@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="max-w-6xl py-12 px-5 mx-auto">
         <div class = "mx-20 my-4" v-if="!action.get.loading">
             <div class="flex flex-row items-center justify-between">
                 <h1 class="font-black text-5xl text-gray-900">{{ action.doc.title }}</h1>
@@ -26,20 +26,53 @@
                 </div>
             </div>
 
-            <div>
-                <TextEditor
-                    ref="textEditor"
-                    editor-class="prose-sm min-h-[4rem] border rounded-b-lg border-t-0 p-2]"
-                    :content="content"
-                    @change="(val) => customValue = val"
-                    :starterkit-options="{
-                    heading: {
-                        levels: [2, 3, 4],
-                    },
-                    }"
-                    placeholder="Write something amazing..."
-                />
+            <hr class="my-2 pb-3" />
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-6">
+                <div class="flex flex-col space-y-4">
+                    <h3 class="font-bold text-lg text-gray-900">Dates</h3>
+                    <div class="flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-3">
+                        <div class="flex flex-col space-y-1">
+                            <label class="text-sm font-medium text-gray-600">Start Date</label>
+                            <DatePicker v-model="action.doc.date" />
+                        </div>
+                        <div class="flex flex-col space-y-1">
+                            <label class="text-sm font-medium text-gray-600">Due Date</label>
+                            <DatePicker 
+                                v-model="date"
+                                variant="subtle"
+                                placeholder="Set Due Date"
+                            />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col space-y-4">
+                    <h3 class="font-bold text-lg text-gray-900">Description</h3>
+                    <div class="border border-gray-200 rounded-lg overflow-hidden">
+                        <TextEditor
+                            ref="textEditor"
+                            editor-class="prose-sm min-h-[8rem] p-3 focus:outline-none"
+                            :content="content"
+                            @change="(val) => customValue = val"
+                            :starterkit-options="{
+                            heading: {
+                                levels: [2, 3, 4],
+                            },
+                            }"
+                            placeholder="Write something amazing..."
+                        />
+                    </div>
+                </div>
             </div>
+            
+
+                <!-- <h3 class="font-bold text-lg text-gray-900">Tasks</h3>
+                <div>
+                    <Checkbox 
+                        label="Task 1"
+                    />
+                </div> -->      
         </div>
         <LoadingIndicator class="w-6 text-center text-blue-500" v-else/>
     </div>
@@ -49,7 +82,7 @@
 // @ts-nocheck
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { TextEditor, Button, createDocumentResource, LoadingIndicator } from 'frappe-ui';
+import { TextEditor, Button, createDocumentResource, LoadingIndicator, DatePicker, Checkbox } from 'frappe-ui';
 
 const router = useRouter();
 const props = defineProps(['name'])
