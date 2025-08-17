@@ -28,7 +28,7 @@
 
             <hr class="my-2 pb-3" />
 
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-6">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-20 mt-6">
                 <div class="flex flex-col space-y-4">
                     <h3 class="font-bold text-lg text-gray-900">Dates</h3>
                     <div class="flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-3">
@@ -43,6 +43,21 @@
                                 variant="subtle"
                                 placeholder="Set Due Date"
                             />
+                        </div>
+                    </div>
+
+                    <div class="pt-12 flex flex-col space-y-4" v-if="action.doc.action_task && action.doc.action_task.length > 0">
+                        <h3 class="font-bold text-lg text-gray-900">Tasks</h3>
+                        <div class="border rounded-lg border-gray-200 p-3">
+                            <div 
+                                v-for="(task, index) in action.doc.action_task" 
+                                :key="task.name || index"
+                                class="flex items-center p-1 border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+                            >
+                                <Checkbox 
+                                    :label="task.description || `Task ${index + 1}`"
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -65,14 +80,6 @@
                     </div>
                 </div>
             </div>
-            
-
-                <!-- <h3 class="font-bold text-lg text-gray-900">Tasks</h3>
-                <div>
-                    <Checkbox 
-                        label="Task 1"
-                    />
-                </div> -->      
         </div>
         <LoadingIndicator class="w-6 text-center text-blue-500" v-else/>
     </div>
