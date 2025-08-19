@@ -119,7 +119,7 @@ const actions = createListResource({
     status: 'To-do',
   },
     cache: "actions",
-    // auto: true,
+    auto: true,
 });
 
 // actions.reload();
@@ -131,7 +131,7 @@ const categories = createListResource({
     return categories.map(category => category.title);
   },
   cache: "categories",
-  // auto: true,
+  auto: true,
 });
 
 // categories.reload();
